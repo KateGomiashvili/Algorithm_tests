@@ -41,5 +41,60 @@ namespace MiniBank.Tests
             //Assert
             Assert.Equal(expected, actual, new CustomerEqulityComparer());
         }
+        [Fact]
+        public void Create_New_Customer()
+        {
+            //Arrange
+            Customer newCustomer = new Customer()
+            {
+                Id=3,
+                Name = "Keti",
+                IdentityNumber="123",
+                PhoneNumber = "123",
+                Email = "123",
+                Type = Models.Type.Phyisical
+            };
+            var customerRepository = new CustomerCsvRepository(@"../../../../MiniBank.Tests/Data/Customers.csv");
+            customerRepository.Create(newCustomer);
+            var expected = 3;
+
+            //Act
+            var actual = customerRepository.GetCustomers();
+
+            //Assert
+            Assert.Equal(expected, actual.Count);
+        }
+        [Fact]
+        public void Update_Existing_Customer() {
+            //Arrange
+            
+            Customer editedCustomer = new Customer()
+            {
+                Id = 3,
+                Name = "Ketevan",
+                IdentityNumber = "123",
+                PhoneNumber = "123",
+                Email = "123",
+                Type = Models.Type.Phyisical
+            };
+            var customerRepository = new CustomerCsvRepository(@"../../../../MiniBank.Tests/Data/Customers.csv");
+            customerRepository.Update(editedCustomer);
+            //Act
+            var actual = customerRepository.GetCustomer(3);
+            //Assert
+            Assert.Equal(editedCustomer, actual, new CustomerEqulityComparer());
+        }
+        [Fact]
+        public void Remove_Customer()
+        {
+            //Arrange
+            var customerRepository = new CustomerCsvRepository(@"../../../../MiniBank.Tests/Data/Customers.csv");
+            customerRepository.Delete(1);
+            var expected = 2;
+            //Act
+            var actual = customerRepository.GetCustomers();
+            //Assert
+            Assert.Equal(expected, actual.Count);
+        }
     }
 }

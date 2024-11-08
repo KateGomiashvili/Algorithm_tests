@@ -20,17 +20,39 @@ namespace MiniBank.Repository
 
         public void Create(Customer customer)
         {
-            throw new NotImplementedException();
+            if (_customers.All(c => c.Id != customer.Id))
+            {
+                _customers.Add(customer);
+                SaveData();
+            }
+
         }
 
         public void Update(Customer customer)
         {
-            throw new NotImplementedException();
+            var currentCustomer = _customers.FirstOrDefault(c => c.Id == customer.Id);
+            if (currentCustomer != null)
+            { 
+                currentCustomer.Name = customer.Name;
+                currentCustomer.IdentityNumber = customer.IdentityNumber;
+                currentCustomer.PhoneNumber = customer.PhoneNumber;
+                currentCustomer.Email = customer.Email;
+                currentCustomer.Type = customer.Type;
+
+                SaveData();
+            }
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var removedCustomer = _customers.FirstOrDefault(c => c.Id == id);
+            if (removedCustomer != null)
+            {
+                _customers.Remove(removedCustomer);
+                SaveData();
+            }
+
+            
         }
 
         private void SaveData()
