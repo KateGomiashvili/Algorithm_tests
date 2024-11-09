@@ -18,7 +18,7 @@ namespace MiniBank.Repository
         public List<Account> GetAccounts() => _accounts;
 
 
-        public List<Account> GetAccounts(int id) => _accounts.Where(account => account.Id == id).ToList();
+        public List<Account> GetAccounts(int userId) => _accounts.Where(account => account.CustomerId == userId).ToList();
 
 
 
@@ -36,16 +36,16 @@ namespace MiniBank.Repository
 
         public void Update(Account account)
         {
-            var currentAccount = _accounts.FirstOrDefault(account=> account.Id == account.Id);
+            var currentAccount = _accounts.FirstOrDefault(a=> a.Id == account.Id);
             if (currentAccount != null) { 
                currentAccount.Id = account.Id;
-               currentAccount.Name = account.Name;
                currentAccount.Currency = account.Currency;
                currentAccount.Balance = account.Balance;
                currentAccount.Iban = account.Iban;
                currentAccount.Name= account.Name;
+               SaveData();
             }
-            SaveData();
+            
         }
 
         public void Delete(int id)
@@ -60,7 +60,10 @@ namespace MiniBank.Repository
 
         private void SaveData()
         {
-            string jsonFile = JsonSerializer.Serialize(_accounts);
+            string jsonFile = JsonSerializer.Serialize(_accounts, new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            });
             File.WriteAllText(_filePath, jsonFile);
         }
 

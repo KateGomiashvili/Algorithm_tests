@@ -3,12 +3,18 @@ using MiniBank.Repository;
 using Newtonsoft.Json.Linq;
 using System.Reflection;
 using System.Text.Json;
+using System.Xml.Linq;
 
 
 namespace MiniBank.Tests
 {
     public class MiniBank_Json_Repository_Should
     {
+        public int getCount(string str)
+        {
+            JArray jsonArray = JArray.Parse(str);
+            return jsonArray.Count;
+        }
         [Fact]
         public void Get_All_Accounts()
         {
@@ -36,32 +42,79 @@ namespace MiniBank.Tests
                 CustomerId = 2,
                 Name = ""
             };
-            
+
             //Act
             var expectedAccount = accountRepository.GetAccount(3);
             //Assert
-            Assert.NotNull(actualAccount);
-            Assert.Equal(expectedAccount.Id, actualAccount.Id);
-            Assert.Equal(expectedAccount.Iban, actualAccount.Iban);
-            Assert.Equal(expectedAccount.Currency, actualAccount.Currency);
-            Assert.Equal(expectedAccount.Balance, actualAccount.Balance);
-            Assert.Equal(expectedAccount.CustomerId, actualAccount.CustomerId);
-            Assert.Equal(expectedAccount.Name, actualAccount.Name);
+            Assert.Equal(expectedAccount, actualAccount, new AccountEqulityComparer());
         }
         [Fact]
-        public void Delete_Account_with_specific_Id() 
+        public void Get_Account_with_Customer_Id()
         {
+            //Arrange
+            var accountRepository = new AccountJsonRepository(@"../../../../MiniBank.Tests/Data/Accounts.json");
+            var actualAccounts = accountRepository.GetAccounts(2);
+
+            //Act
+            var expected = 3;
+            //Assert
+            Assert.Equal(expected, actualAccounts.Count);
+        }
+        [Fact]
+        public void Create_Account()
+        {
+            //Arrange
+            var accountRepository = new AccountJsonRepository(@"../../../../MiniBank.Tests/Data/Accounts.json");
+            var newAccount = new Account()
+            {
+                Id = 5,
+                Iban = "GE91SB4412587693211001",
+                Currency = "GEL",
+                Balance = 350,
+                CustomerId = 1,
+                Name = ""
+            };
+            //Act
+            accountRepository.Create(newAccount);
+            var actualAccount = new Account();
+            var expected = 5;
+            string jsonString = File.ReadAllText(@"../../../../MiniBank.Tests/Data/Accounts.json");
+            //Assert
+            Assert.Equal(expected, getCount(jsonString));
+
+        }
+        [Fact]
+        public void Update_Account()
+        {
+            //Arrange
+            var accountRepository = new AccountJsonRepository(@"../../../../MiniBank.Tests/Data/Accounts.json");
+            var currentAccount = new Account()
+            {
+                Id = 5,
+                Iban = "GE91SB4412587693000000",
+                Currency = "GEL",
+                Balance = 3500,
+                CustomerId = 1,
+                Name = "keti"
+            };
+            accountRepository.Update(currentAccount);
+            var expectedAccount = accountRepository.GetAccount(5);
+            Assert.Equal(currentAccount, expectedAccount, new AccountEqulityComparer());
+            
+        }
+        [Fact]
+        public void Delete_Account_with_specific_Id()
+        {
+            //Arrange
             var accountRepository = new AccountJsonRepository(@"../../../../MiniBank.Tests/Data/Accounts.json");
             accountRepository.Delete(2);
-            var expected = 3;
+            //Act
+            var expected = 4;
             string jsonString = File.ReadAllText(@"../../../../MiniBank.Tests/Data/Accounts.json");
 
-            // Parse the JSON as JArray
-            JArray jsonArray = JArray.Parse(jsonString);
-
-            // Get the count of objects
-            int numberOfObjects = jsonArray.Count;
-            Assert.Equal(expected, numberOfObjects);
+            //Assert
+            Assert.Equal(expected, getCount(jsonString));
         }
-}
+
+    }
 }
