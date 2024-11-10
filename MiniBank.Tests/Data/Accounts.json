@@ -8,6 +8,14 @@
     "Name": ""
   },
   {
+    "Id": 2,
+    "Iban": "GE65SB3215889645123458",
+    "Currency": "GBP",
+    "Balance": 445.2,
+    "CustomerId": 2,
+    "Name": ""
+  },
+  {
     "Id": 3,
     "Iban": "GE91SB4412587693211000",
     "Currency": "GEL",
@@ -22,13 +30,5 @@
     "Balance": 1224,
     "CustomerId": 2,
     "Name": ""
-  },
-  {
-    "Id": 5,
-    "Iban": "GE91SB4412587693000000",
-    "Currency": "GEL",
-    "Balance": 3500,
-    "CustomerId": 1,
-    "Name": "keti"
   }
 ]

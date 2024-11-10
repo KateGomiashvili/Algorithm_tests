@@ -10,9 +10,10 @@ namespace MiniBank.Tests
 {
     public class MiniBank_Json_Repository_Should
     {
-        public int getCount(string str)
+        public int getCount()
         {
-            JArray jsonArray = JArray.Parse(str);
+            string jsonString = File.ReadAllText(@"../../../../MiniBank.Tests/Data/Accounts.json");
+            JArray jsonArray = JArray.Parse(jsonString);
             return jsonArray.Count;
         }
         [Fact]
@@ -78,9 +79,9 @@ namespace MiniBank.Tests
             accountRepository.Create(newAccount);
             var actualAccount = new Account();
             var expected = 5;
-            string jsonString = File.ReadAllText(@"../../../../MiniBank.Tests/Data/Accounts.json");
+            
             //Assert
-            Assert.Equal(expected, getCount(jsonString));
+            Assert.Equal(expected, getCount());
 
         }
         [Fact]
@@ -110,10 +111,9 @@ namespace MiniBank.Tests
             accountRepository.Delete(2);
             //Act
             var expected = 4;
-            string jsonString = File.ReadAllText(@"../../../../MiniBank.Tests/Data/Accounts.json");
 
             //Assert
-            Assert.Equal(expected, getCount(jsonString));
+            Assert.Equal(expected, getCount());
         }
 
     }
