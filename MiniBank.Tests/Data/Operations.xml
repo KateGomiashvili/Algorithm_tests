@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations>
+  <Operation>
+    <Id>1</Id>
+    <AccountId>4</AccountId>
+    <CustomerId>1</CustomerId>
+    <Type>Credit</Type>
+    <Amount>100</Amount>
+    <HappendAt>2024-11-15T15:39:11.5915076+04:00</HappendAt>
+  </Operation>
+  <Operation>
+    <Id>2</Id>
+    <AccountId>4</AccountId>
+    <CustomerId>1</CustomerId>
+    <Type>Credit</Type>
+    <Amount>100</Amount>
+    <HappendAt>2024-11-15T15:39:37.6822914+04:00</HappendAt>
+  </Operation>
+</Operations>
