@@ -32,7 +32,7 @@ namespace MiniBank.Tests
                 IdentityNumber = "31024852345",
                 PhoneNumber = "555337681",
                 Email = "Iakob.Qobalia@gmail.com",
-                Type = Models.Type.Phyisical,
+                Type = Models.CustomerType.Phyisical,
             };
 
             //Act
@@ -52,7 +52,7 @@ namespace MiniBank.Tests
                 IdentityNumber="123",
                 PhoneNumber = "123",
                 Email = "123",
-                Type = Models.Type.Phyisical
+                Type = Models.CustomerType.Phyisical
             };
             var customerRepository = new CustomerCsvRepository(@"../../../../MiniBank.Tests/Data/Customers.csv");
             customerRepository.Create(newCustomer);
@@ -75,7 +75,7 @@ namespace MiniBank.Tests
                 IdentityNumber = "123",
                 PhoneNumber = "123",
                 Email = "123",
-                Type = Models.Type.Phyisical
+                Type = Models.CustomerType.Phyisical
             };
             var customerRepository = new CustomerCsvRepository(@"../../../../MiniBank.Tests/Data/Customers.csv");
             customerRepository.Update(editedCustomer);

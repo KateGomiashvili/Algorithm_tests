@@ -32,7 +32,7 @@ namespace MiniBank.Repository
         {
             var currentCustomer = _customers.FirstOrDefault(c => c.Id == customer.Id);
             if (currentCustomer != null)
-            { 
+            {
                 currentCustomer.Name = customer.Name;
                 currentCustomer.IdentityNumber = customer.IdentityNumber;
                 currentCustomer.PhoneNumber = customer.PhoneNumber;
@@ -52,14 +52,27 @@ namespace MiniBank.Repository
                 SaveData();
             }
 
-            
+
         }
 
         private void SaveData()
         {
+            /*
             var lines = new List<string>() { "Id,Name,IdentityNumber,PhoneNumber,Email,Type" };
             lines.AddRange(_customers.Select(customer => $"{customer.Id},{customer.Name},{customer.IdentityNumber},{customer.PhoneNumber},{customer.Email},{customer.Type}"));
             File.WriteAllLines(_filePath, lines);
+            */
+
+            using (StreamWriter sw = new StreamWriter(_filePath, false))
+            {
+                var lines = new List<string>() { "Id,Name,IdentityNumber,PhoneNumber,Email,Type" };
+                lines.AddRange(_customers.Select(customer => $"{customer.Id},{customer.Name},{customer.IdentityNumber},{customer.PhoneNumber},{customer.Email},{customer.Type}"));
+                foreach (var line in lines) { 
+                sw.WriteLine(line);
+                }
+            }
+
+
         }
 
         private List<Customer> LoadData()
@@ -78,7 +91,7 @@ namespace MiniBank.Repository
                     IdentityNumber = parts[2],
                     PhoneNumber = parts[3],
                     Email = parts[4],
-                    Type = Enum.Parse<Models.Type>(parts[5])
+                    Type = Enum.Parse<Models.CustomerType>(parts[5])
                 }).ToList();
         }
     }
